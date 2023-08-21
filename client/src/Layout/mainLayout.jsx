@@ -1,13 +1,13 @@
+import { Box } from '@chakra-ui/react'
 import React from 'react'
-import { Link } from 'react-router-dom'
+import Header from './header'
 
 const MainLayout = ({ children }) => {
     return (
-        <>
-            <Link to="/profile/edit"> user edit profile</Link>
+        <Box height={"100vh"}>
+            <Header />
             {children}
-            footer
-        </>
+        </Box>
     )
 }
 

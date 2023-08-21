@@ -50,17 +50,23 @@ const Login = async (req, res, next) => {
         const user = await Blogger.findOne({
             email: email
         }).select('email password');
+        if (!user) {
+            return res.status(400).json({
+                isLogin: true,
+                message: "invalid email"
+            })
+        }
         const isPasswordMatches = await bcrypt.compare(password, user.password)
         if (isPasswordMatches) {
-            user.password=""
-            const jwtToken = await jwt.sign({user}, process.env.SECRET, { expiresIn: 60 * 60 })
+            user.password = ""
+            const jwtToken = await jwt.sign({ user }, process.env.SECRET, { expiresIn: 60 * 60 })
             console.log(jwtToken);
             return res.json({
                 isLogin: true,
                 token: jwtToken
             })
         }
-        return res.json({
+        return res.status(400).json({
             error: true,
             message: "Email or password incorrect"
         })
